@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div style="text-align:center;">
+
+    <h2>{{ class_name }} (Code: {{ code }})</h2>
+
+    <h3>Emotion Analytics (Last 7 Days)</h3>
+    <p>Data based on latest emotions of students in the past week.</p>
+
+    {% if top_emotion %}
+        <div style="margin:15px auto 25px auto; padding:10px 16px;
+                    border-left:4px solid #3498db; background:#f4f9ff;
+                    max-width:600px; text-align:left;">
+            <b>Class Mood Insight:</b><br>
+            <span>
+                Many students recently feel <b>{{ top_emotion }}</b>. <br>
+                {{ top_message }}
+            </span>
+        </div>
+    {% else %}
+        <p style="margin-top:20px;"><i>{{ top_message }}</i></p>
+    {% endif %}
+
+    <!-- SUMMARY -->
+    <h4>Summary</h4>
+
+    <table style="margin: 0 auto; border-collapse: collapse; width: 60%;">
+        <tr>
+            <th style="border:1px solid #ddd; padding:8px;">Emotion</th>
+            <th style="border:1px solid #ddd; padding:8px;">Number of students</th>
+        </tr>
+
+        {% for emotion, count in emotion_counts.items() %}
+        <tr>
+            <td style="border:1px solid #ddd; padding:8px;">{{ emotion }}</td>
+            <td style="border:1px solid #ddd; padding:8px;">{{ count }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <br>
+
+    <!-- DETAILS -->
+    <h4>Details</h4>
+
+    {% if detailed %}
+    <table style="margin: 0 auto; border-collapse: collapse; width: 70%;">
+        <tr>
+            <th style="border:1px solid #ddd; padding:8px;">Date</th>
+            <th style="border:1px solid #ddd; padding:8px;">Student</th>
+            <th style="border:1px solid #ddd; padding:8px;">Emotion</th>
+        </tr>
+
+        {% for row in detailed %}
+        <tr>
+            <td style="border:1px solid #ddd; padding:8px;">{{ row.date }}</td>
+            <td style="border:1px solid #ddd; padding:8px;">{{ row.fullname }}</td>
+            <td style="border:1px solid #ddd; padding:8px;">{{ row.emotion }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    {% else %}
+    <p><i>No emotion entries in the last 7 days.</i></p>
+    {% endif %}
+
+    <br>
+
+    <a class="btn btn-secondary" href="{{ url_for('enter_classroom', code=code) }}">
+        ← Back to Classroom
+    </a>
+
+</div>
+
+{% endblock %}

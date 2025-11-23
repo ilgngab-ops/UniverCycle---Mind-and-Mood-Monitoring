@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2 style="text-align:center; margin-bottom:5px;">Study Timer</h2>
+<p style="text-align:center; margin-top:0;">Real-time Philippine Time (PHT)</p>
+
+<h3 id="clock"
+    style="font-size: 32px; font-weight: bold; text-align:center; margin-bottom: 30px;">
+    Loading...
+</h3>
+
+<!-- BUTTON GROUP -->
+<div style="text-align:center; margin-bottom: 25px;">
+    <button class="btn-pill" onclick="startTimer()">Start Study</button>
+    <button class="btn-pill-red" onclick="startRest()">Rest</button>
+
+    <!-- OPEN FRIENDS IN NEW TAB — PARA DI MA-RESET TIMER -->
+    <a href="{{ url_for('friends') }}"
+       class="btn-pill secondary"
+       target="_blank"
+       rel="noopener noreferrer">
+        View Friends
+    </a>
+</div>
+
+<!-- STUDY TIME -->
+<h3 style="text-align:center;">Session Time (Study):</h3>
+<p id="timerDisplay" style="font-size: 26px; text-align:center; margin-bottom:20px;">
+    00:00:00
+</p>
+
+<hr style="width:70%; margin:auto;">
+
+<!-- REST TIME -->
+<br>
+<h3 style="text-align:center;">Rest Time:</h3>
+<p id="restDisplay"
+   style="font-size: 26px; text-align:center; color: rgb(45, 165, 45); margin-bottom:40px;">
+    00:00:00
+</p>
+
+<!-- DONE BUTTON -->
+<div style="text-align:center; margin-top:15px;">
+    <form id="doneForm" method="post" action="{{ url_for('timer_done') }}">
+        <input type="hidden" name="study_seconds" id="study_seconds">
+        <input type="hidden" name="rest_seconds" id="rest_seconds">
+
+        <button class="btn-pill-big" type="button" onclick="doneStudying()">
+            Done Studying → View Analytics
+        </button>
+    </form>
+</div>
+
+<script>
+/* ============================
+       STATUS UPDATE ROUTES
+============================ */
+const STATUS_STUDYING_URL = "{{ url_for('set_status', state='studying') }}";
+const STATUS_RESTING_URL  = "{{ url_for('set_status', state='resting') }}";
+
+function updateStatus(url) {
+    fetch(url, { method: "POST" });
+}
+
+/* ============================
+       REAL-TIME CLOCK
+============================ */
+function updateClock() {
+    const options = {
+        timeZone: "Asia/Manila",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit"
+    };
+    const now = new Date().toLocaleTimeString("en-US", options);
+    document.getElementById("clock").innerText = now;
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+/* ============================
+       STUDY TIMER
+============================ */
+let studySeconds = 0;
+let studyInterval = null;
+
+function updateStudyTimer() {
+    studySeconds++;
+    displayTime("timerDisplay", studySeconds);
+}
+
+function startTimer() {
+    pauseRest();
+    updateStatus(STATUS_STUDYING_URL);
+
+    if (!studyInterval) {
+        studyInterval = setInterval(updateStudyTimer, 1000);
+    }
+}
+
+function pauseTimer() {
+    clearInterval(studyInterval);
+    studyInterval = null;
+}
+
+/* ============================
+       REST TIMER
+============================ */
+let restSeconds = 0;
+let restInterval = null;
+
+function updateRestTimer() {
+    restSeconds++;
+    displayTime("restDisplay", restSeconds);
+}
+
+function startRest() {
+    pauseTimer();
+    updateStatus(STATUS_RESTING_URL);
+
+    if (!restInterval) {
+        restInterval = setInterval(updateRestTimer, 1000);
+    }
+}
+
+function pauseRest() {
+    clearInterval(restInterval);
+    restInterval = null;
+}
+
+/* ============================
+       DONE → SUBMIT FORM
+============================ */
+function doneStudying() {
+    pauseTimer();
+    pauseRest();
+
+    document.getElementById("study_seconds").value = studySeconds;
+    document.getElementById("rest_seconds").value = restSeconds;
+
+    document.getElementById("doneForm").submit();
+}
+
+/* ============================
+       TIME FORMAT HELPER
+============================ */
+function displayTime(id, totalSeconds) {
+    let hrs  = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
+    let mins = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
+    let secs = String(totalSeconds % 60).padStart(2, '0');
+
+    document.getElementById(id).innerHTML = `${hrs}:${mins}:${secs}`;
+}
+</script>
+
+{% endblock %}

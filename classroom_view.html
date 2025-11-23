@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>{{ class_name }} (Code: {{ code }})</h2>
+
+<p>
+    You are in this classroom as
+    <strong>{{ role }}</strong>.
+</p>
+
+<hr>
+
+{% if role == "Class Rep" %}
+    <h3>Class Rep Options</h3>
+    <ul>
+        <li>
+            <a class="btn" href="{{ url_for('classroom_mood', code=code) }}">
+                Share what you feel today
+            </a>
+        </li>
+        <li>
+            <a class="btn" href="{{ url_for('classroom_feelings', code=code) }}">
+                Show classmates’ feelings
+            </a>
+        </li>
+        <li>
+            <a class="btn" href="{{ url_for('classroom_help', code=code) }}">
+                Ask help anonymously
+            </a>
+        </li>
+        <li>
+            <a class="btn" href="{{ url_for('classroom_announce', code=code) }}">
+                Send announcement
+            </a>
+        </li>
+        <li>
+            <a class="btn" href="{{ url_for('classroom_analytics', code=code) }}">
+                View classroom emotion analytics
+            </a>
+        </li>
+    </ul>
+
+{% else %}
+    <h3>Student Options</h3>
+    <ul>
+        <li>
+            <a class="btn" href="{{ url_for('classroom_mood', code=code) }}">
+                Share what you feel today
+            </a>
+        </li>
+        <li>
+            <a class="btn" href="{{ url_for('classroom_feelings', code=code) }}">
+                Show classmates’ feelings
+            </a>
+        </li>
+        <li>
+            <a class="btn" href="{{ url_for('classroom_help', code=code) }}">
+                Ask help anonymously
+            </a>
+        </li>
+        <li>
+            <a class="btn" href="{{ url_for('classroom_announcements', code=code) }}">
+                View announcements
+            </a>
+        </li>
+    </ul>
+{% endif %}
+
+<br>
+<a class="btn btn-secondary" href="{{ url_for('my_classrooms') }}">
+    ← Back to My Classrooms
+</a>
+
+{% endblock %}

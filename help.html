@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Anonymous Help Request</h2>
+
+<form method="post">
+    <label>Share anything you want to say:</label>
+    <textarea name="message" rows="4" required></textarea>
+    <button class="btn" type="submit">Send</button>
+</form>
+
+{% if message %}
+<p class="success">{{ message }}</p>
+{% endif %}
+{% endblock %}

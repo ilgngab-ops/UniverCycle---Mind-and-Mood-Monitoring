@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>UniverCycle</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <!-- Correct CSS filename: styles.css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+<div class="topbar">
+    {% if session.get('user') %}
+
+        {% if current_profile_pic %}
+        <img src="{{ url_for('static', filename='uploads/' ~ current_profile_pic) }}"
+             alt="profile" class="nav-pfp">
+        {% endif %}
+
+        <a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
+        <a class="nav-link" href="{{ url_for('friends') }}">Friends</a>
+
+        <div class="nav-right">
+            <span class="nav-user">
+                Logged in as <b>{{ session.get('user') }}</b>
+            </span>
+            <a href="{{ url_for('logout') }}" class="nav-logout">(Logout)</a>
+        </div>
+
+    {% else %}
+        <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+        <a class="nav-link" href="{{ url_for('register') }}">Register</a>
+    {% endif %}
+</div>
+
+<div class="card">
+    {% block content %}{% endblock %}
+</div>
+
+</body>
+</html>

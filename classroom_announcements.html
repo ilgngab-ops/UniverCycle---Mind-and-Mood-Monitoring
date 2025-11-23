@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="card" style="text-align:center;">
+
+    <h2>{{ class_name }} (Code: {{ code }})</h2>
+    <h3>Classroom Announcements</h3>
+
+    {% if announcements %}
+    <table style="width:100%; border-collapse: collapse; margin-top: 16px; text-align:center;">
+        <tr>
+            <th style="border:1px solid #ddd; padding:10px;">Date</th>
+            <th style="border:1px solid #ddd; padding:10px;">From</th>
+            <th style="border:1px solid #ddd; padding:10px;">Announcement</th>
+        </tr>
+
+        {% for a in announcements %}
+        <tr>
+            <td style="border:1px solid #ddd; padding:10px;">{{ a.date }}</td>
+            <td style="border:1px solid #ddd; padding:10px;">
+                {{ a.sender }}
+            </td>
+            <td style="border:1px solid #ddd; padding:10px;">{{ a.message }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+        <p>Wala pang announcement sa classroom na ito.</p>
+    {% endif %}
+
+    <br>
+    <a class="btn btn-secondary" href="{{ url_for('enter_classroom', code=code) }}">
+        ← Back to Classroom
+    </a>
+
+</div>
+
+{% endblock %}

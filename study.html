@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Log Study Session</h2>
+
+<form method="post">
+    <label>Minutes Studied:</label>
+    <input type="number" name="minutes" min="1" required>
+    <button class="btn" type="submit">Save</button>
+</form>
+
+{% if message %}
+<p class="success">{{ message }}</p>
+{% endif %}
+
+{% if error %}
+<p class="error">{{ error }}</p>
+{% endif %}
+{% endblock %}

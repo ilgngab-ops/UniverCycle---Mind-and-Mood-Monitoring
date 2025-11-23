@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Student Dashboard</h2>
+<p>Hello, {{ user }}!</p>
+
+<ul>
+    <li><a class="btn" href="{{ url_for('mood') }}">Share what you feel today</a></li>
+    <li><a class="btn" href="#">View classmates' emotions today</a></li>
+    <li><a class="btn" href="{{ url_for('help_page') }}">Seek help anonymously</a></li>
+</ul>
+{% endblock %}

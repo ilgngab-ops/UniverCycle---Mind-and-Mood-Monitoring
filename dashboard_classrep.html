@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Class Rep Dashboard</h2>
+<p>Hello, {{ user }} (Class Rep)!</p>
+
+<ul>
+    <li><a class="btn" href="{{ url_for('mood') }}">Share what you feel today</a></li>
+    <li><a class="btn" href="#">View classmates' emotions</a></li>
+    <li><a class="btn" href="#">View class analytics</a></li>
+</ul>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Welcome to UniverCycle</h2>
+<p>
+    UniverCycle is a Mind & Mood Monitoring tool that helps students stay balanced, aware,
+    and productive by tracking their daily mood and study habits.
+</p>
+
+<a href="{{ url_for('login') }}" class="btn">Login</a>
+<a href="{{ url_for('register') }}" class="btn btn-secondary">Register</a>
+
+{% endblock %}

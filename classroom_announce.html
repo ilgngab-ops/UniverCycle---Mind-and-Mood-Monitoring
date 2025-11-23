@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>{{ class_name }} (Code: {{ code }})</h2>
+<h3>Send Announcement</h3>
+
+{% if error %}
+<p style="color:red;">{{ error }}</p>
+{% endif %}
+{% if message %}
+<p style="color:green;">{{ message }}</p>
+{% endif %}
+
+<form method="post">
+    <textarea name="message" rows="4" style="width:100%;" placeholder="Type your announcement here..."></textarea>
+    <br><br>
+    <button type="submit" class="btn">Send announcement</button>
+</form>
+
+<hr>
+
+<h3>Previous Announcements</h3>
+{% if announcements %}
+    <ul>
+    {% for a in announcements %}
+        <li>
+            <strong>{{ a.date }}</strong> –
+            <em>{{ a.sender }}</em>:
+            {{ a.message }}
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No announcements yet.</p>
+{% endif %}
+
+<br>
+<a class="btn btn-secondary" href="{{ url_for('enter_classroom', code=code) }}">
+    ← Back to Classroom
+</a>
+
+{% endblock %}

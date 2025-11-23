@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- CropperJS CSS (ok lang kahit nasa body, gagana pa rin) -->
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" />
+
+<h2>Update Profile Picture</h2>
+
+{% if message %}
+    <p style="color: green;">{{ message }}</p>
+{% endif %}
+{% if error %}
+    <p style="color: red;">{{ error }}</p>
+{% endif %}
+
+<form id="uploadForm" method="POST" enctype="multipart/form-data">
+    <p>Pumili ng picture (pwede mong i-zoom / i-crop bago i-upload):</p>
+    <input type="file" id="photoInput" name="photo" accept="image/*"><br><br>
+
+    <!-- Preview + crop area -->
+    <div style="width: 260px; height: 260px; border: 1px solid #ccc; overflow: hidden; margin-bottom: 10px;">
+        <img id="preview" style="max-width: 100%; display: none;">
+    </div>
+
+    <button type="submit" class="btn">Upload</button>
+</form>
+
+<!-- CropperJS JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+
+<script>
+    let cropper = null;
+
+    const photoInput   = document.getElementById("photoInput");
+    const preview      = document.getElementById("preview");
+    const uploadForm   = document.getElementById("uploadForm");
+
+    // Kapag pumili ng image
+    photoInput.addEventListener("change", function (e) {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function (event) {
+            preview.src = event.target.result;
+            preview.style.display = "block";
+
+            // destroy old cropper kung meron
+            if (cropper) {
+                cropper.destroy();
+            }
+
+            // create new cropper
+            cropper = new Cropper(preview, {
+                aspectRatio: 1,      // square (1:1)
+                viewMode: 1,
+                dragMode: "move",
+                zoomable: true,
+                scalable: true,
+                autoCropArea: 1
+            });
+        };
+        reader.readAsDataURL(file);
+    });
+
+    // Bago mag-submit, i-crop muna yung image
+    uploadForm.addEventListener("submit", function (e) {
+        // kung walang cropper (walang piniling file), hayaan normal behavior
+        if (!cropper) {
+            return;   // diretso POST sa Flask
+        }
+
+        e.preventDefault(); // pigilan ang default submit
+
+        // Kunin ang cropped area bilang canvas, then convert to Blob
+        cropper.getCroppedCanvas({
+            width: 300,
+            height: 300
+        }).toBlob(function (blob) {
+            // Gawa ng bagong File mula sa cropped image
+            const croppedFile = new File([blob], "cropped.png", { type: "image/png" });
+
+            // Palitan ang laman ng original file input gamit ang cropped file
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(croppedFile);
+            photoInput.files = dataTransfer.files;
+
+            // Ngayon, normal na mag-su-submit si form papunta sa Flask,
+            // pero ang file na masi-save ay yung naka-crop na.
+            uploadForm.submit();
+        }, "image/png");
+    });
+</script>
+
+{% endblock %}

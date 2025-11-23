@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- Back button to mode selection -->
+<a href="{{ url_for('mode') }}" class="btn btn-secondary" style="margin-bottom: 6px;">
+    ← RETURN
+</a>
+
+<!-- TOP: PROFILE + GREETING -->
+<div style="display: flex; align-items: center; gap: 16px; margin-top: 8px; margin-bottom: 16px;">
+
+    {% if current_profile_pic %}
+        <!-- Actual Profile Picture -->
+        <img src="{{ url_for('static', filename='uploads/' ~ current_profile_pic) }}"
+             alt="Profile Picture"
+             style="width:70px;height:70px;border-radius:50%;object-fit:cover;border:2px solid #ccc;">
+    {% else %}
+        <!-- Default if NO uploaded profile -->
+        <img src="{{ url_for('static', filename='default_profile.png') }}"
+             alt="Default Profile"
+             style="width:70px;height:70px;border-radius:50%;object-fit:cover;border:2px solid #ccc;">
+    {% endif %}
+
+    <div>
+        <h2 style="margin:0;">Dashboard</h2>
+
+        <p style="margin:2px 0 6px 0;">
+            Kumusta, <strong>{{ full_name }}</strong>?
+        </p>
+
+        <a href="{{ url_for('profile') }}" class="btn btn-sm btn-outline-primary">
+            ✏️ Edit Profile / Change Picture
+        </a>
+    </div>
+</div>
+
+<!-- NOTIFICATION BADGE FOR CLASS HELP -->
+{% if notif_count and notif_count > 0 %}
+    <p>
+        <span style="background: red; color: white; padding: 3px 10px; border-radius: 14px; font-size: 13px;">
+            🔔 {{ notif_count }} new classroom help message(s)
+        </span>
+        <br>
+        <small>Check your classrooms in School Mode to view help requests.</small>
+    </p>
+{% endif %}
+
+<!-- HOME MODE -->
+{% if study_mode == "Home" %}
+    <h3>MAG-AARAL NA (Home)</h3>
+    <ul>
+        <li><a class="btn" href="{{ url_for('timer') }}">Start Timer</a></li>
+        <li><a class="btn" href="{{ url_for('friends') }}">View Friends</a></li>
+        <li><a class="btn" href="{{ url_for('summary') }}">Show Analytics</a></li>
+    </ul>
+
+<!-- SCHOOL MODE -->
+{% elif study_mode == "School" %}
+    <h3>School Mode</h3>
+    <ul>
+        <li><a class="btn" href="{{ url_for('my_classrooms') }}">Enter Classroom</a></li>
+        <li><a class="btn" href="{{ url_for('classroom_join_create') }}">Join or Create New Classroom</a></li>
+    </ul>
+
+<!-- NO MODE SELECTED -->
+{% else %}
+    <p>Wala ka pang napipiling study mode.
+        <a href="{{ url_for('mode') }}">Click here</a> para pumili.
+    </p>
+{% endif %}
+
+{% endblock %}

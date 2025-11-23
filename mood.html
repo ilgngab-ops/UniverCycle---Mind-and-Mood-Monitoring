@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Record Mood Today</h2>
+
+<p>Example moods: happy, sad, stressed, tired, okay, excited</p>
+
+<form method="post">
+    <label>Your mood today:</label>
+    <input type="text" name="mood" required>
+    <button class="btn" type="submit">Save</button>
+</form>
+
+{% if message %}
+<p class="success">{{ message }}</p>
+{% endif %}
+{% endblock %}

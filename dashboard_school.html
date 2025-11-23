@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>School Mode</h2>
+<p>Kumusta, {{ user }}! Piliin kung ano ang gagawin mo sa school.</p>
+
+<ul>
+    <li><a class="btn" href="#">Join or Create New Classroom</a></li>
+    <li><a class="btn" href="#">View Classrooms</a></li>
+</ul>
+
+<h3>Piliin ang role mo:</h3>
+<form method="post" action="{{ url_for('set_role') }}">
+    <button class="btn" name="role" value="class_rep">Class Rep</button>
+    <button class="btn btn-secondary" name="role" value="student">Studyante</button>
+</form>
+{% endblock %}

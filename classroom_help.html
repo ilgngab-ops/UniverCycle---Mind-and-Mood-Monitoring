@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>{{ class_name }} (Code: {{ code }})</h2>
+<h3>Ask help anonymously</h3>
+
+{% if message %}
+    <p style="color: green;">{{ message }}</p>
+{% endif %}
+
+<form method="post">
+    <textarea name="message" rows="4" style="width: 100%;"
+              placeholder="Type your concern here..."></textarea>
+    <br><br>
+    <button class="btn" type="submit">Send to classroom</button>
+</form>
+
+<br>
+<h4>Anonymous help requests in this classroom</h4>
+<ul>
+    {% for h in help_list %}
+        <li><b>{{ h.date }}:</b> {{ h.message }}</li>
+    {% else %}
+        <li>No messages yet.</li>
+    {% endfor %}
+</ul>
+
+<br>
+<a class="btn btn-secondary" href="{{ url_for('enter_classroom', code=code) }}">
+    ← Back to Classroom
+</a>
+
+{% endblock %}

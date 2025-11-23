@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div style="text-align:center;">
+
+    <h2>{{ class_name }} (Code: {{ code }})</h2>
+    <p>
+        You are in this classroom as
+        <b>{{ role }}</b>.
+    </p>
+
+    <hr>
+
+    {# --- User’s own emotion message --- #}
+    {% if user_emotion %}
+        <div style="
+            border-left: 4px solid #3498db;
+            padding: 10px 15px;
+            margin: 20px auto;
+            background: #f4f9ff;
+            max-width: 800px;
+            text-align:left;
+        ">
+            <p style="margin: 0 0 5px 0;">
+                Today, you shared that you feel <b>{{ user_emotion }}</b>.
+            </p>
+
+            {% if user_message %}
+                <p style="margin: 0; font-size: 14px; color: #555;">
+                    {{ user_message }}
+                </p>
+            {% endif %}
+        </div>
+    {% endif %}
+
+    <h3>Classroom Feelings (Today)</h3>
+
+    {% if rows %}
+    <table style="margin: 10px auto; border-collapse: collapse; width: 80%;">
+        <tr>
+            <th style="border:1px solid #ddd; padding:8px;">Student</th>
+            <th style="border:1px solid #ddd; padding:8px;">Emotion</th>
+            <th style="border:1px solid #ddd; padding:8px;">Time</th>
+            <th style="border:1px solid #ddd; padding:8px;">Date</th>
+        </tr>
+
+        {% for row in rows %}
+        <tr>
+            <td style="border:1px solid #ddd; padding:8px; text-align:left;">
+                {% if row.pic %}
+                    <img src="{{ url_for('static', filename='uploads/' ~ row.pic) }}"
+                         alt="pic"
+                         style="width:30px; height:30px; border-radius:50%;
+                                vertical-align:middle; margin-right:8px; object-fit:cover;">
+                {% else %}
+                    <img src="{{ url_for('static', filename='default_profile.png') }}"
+                         alt="default"
+                         style="width:30px; height:30px; border-radius:50%;
+                                vertical-align:middle; margin-right:8px; object-fit:cover;">
+                {% endif %}
+                <b>{{ row.fullname }}</b>
+                <span style="color:#777; font-size:12px;">(@{{ row.username }})</span>
+            </td>
+
+            <td style="border:1px solid #ddd; padding:8px;">{{ row.emotion }}</td>
+            <td style="border:1px solid #ddd; padding:8px;">{{ row.time }}</td>
+            <td style="border:1px solid #ddd; padding:8px;">{{ row.date }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+        <p><i>No students have shared their feelings today.</i></p>
+    {% endif %}
+
+    <br>
+
+    <a class="btn btn-secondary" href="{{ url_for('enter_classroom', code=code) }}">
+        ← Back to Classroom
+    </a>
+
+</div>
+
+{% endblock %}

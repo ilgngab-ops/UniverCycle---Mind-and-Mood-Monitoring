@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2 style="text-align:center;">Manage Classroom</h2>
+
+<div style="
+    max-width: 620px;
+    margin: 20px auto;
+    padding: 24px 28px;
+    background:white;
+    border-radius:18px;
+    box-shadow:0 10px 30px rgba(15,23,42,0.12);
+">
+
+    <p style="text-align:center; margin-bottom:18px;">
+        You are the <b>Class Rep</b> of<br>
+        <span style="font-size:18px; font-weight:600;">
+            {{ class_name }} (Code: {{ code }})
+        </span>
+    </p>
+
+    <hr style="margin:18px 0;">
+
+    <h3 style="color:#b91c1c;">Delete Classroom</h3>
+    <p style="font-size:14px; color:#555;">
+        Deleting this classroom will remove it for <b>all members</b>:
+        the class, emotions, announcements, and membership will be permanently deleted.
+        This action cannot be undone.
+    </p>
+
+    {% if error %}
+        <p style="color:#b91c1c; font-weight:500;">{{ error }}</p>
+    {% endif %}
+
+    <form method="post" style="margin-top:12px;">
+        <label for="password"><b>Type your account password to confirm:</b></label>
+        <input type="password" id="password" name="password" required>
+
+        <button type="submit"
+                class="btn-pill-red"
+                style="width:100%; margin-top:10px;">
+            Delete Classroom Permanently
+        </button>
+    </form>
+
+    <div style="text-align:center; margin-top:18px;">
+        <a href="{{ url_for('my_classrooms') }}"
+           class="btn-pill"
+           style="background:#eef1ff; color:#333;">
+            ← Back to Classrooms
+        </a>
+    </div>
+</div>
+
+{% endblock %}

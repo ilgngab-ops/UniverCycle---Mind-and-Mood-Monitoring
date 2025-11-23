@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Join or Create Classroom</h2>
+
+{% if message %}
+<p style="color: green;">{{ message }}</p>
+{% endif %}
+{% if error %}
+<p style="color: red;">{{ error }}</p>
+{% endif %}
+
+<div style="display: flex; gap: 40px; flex-wrap: wrap;">
+
+    <div style="flex: 1; min-width: 250px;">
+        <h3>Create New Classroom</h3>
+        <form method="post">
+            <input type="hidden" name="action" value="create">
+            <label>Class Name:</label><br>
+            <input type="text" name="classname" required><br><br>
+            <button class="btn" type="submit">Create</button>
+        </form>
+    </div>
+
+    <div style="flex: 1; min-width: 250px;">
+        <h3>Join Existing Classroom</h3>
+        <form method="post">
+            <input type="hidden" name="action" value="join">
+            <label>Class Code:</label><br>
+            <input type="text" name="code" required><br><br>
+            <button class="btn btn-secondary" type="submit">Join</button>
+        </form>
+    </div>
+
+</div>
+
+<a href="{{ url_for('my_classrooms') }}" class="btn" style="margin-top: 20px;">Back to My Classrooms</a>
+
+{% endblock %}

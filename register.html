@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Create Account</h2>
+
+<form method="post" enctype="multipart/form-data">
+
+    <label>Full Name</label>
+    <input type="text" name="fullname" required>
+
+    <label>Username</label>
+    <input type="text" name="username" required>
+
+    <label>Password</label>
+    <input type="password" name="password" required>
+
+    <label>Profile Picture</label>
+    <input type="file" name="photo" accept=".png,.jpg,.jpeg,.gif" required>
+
+    {% if error %}
+        <p style="color:red; margin-top:10px;">{{ error }}</p>
+    {% endif %}
+
+    <button type="submit" class="btn">Register</button>
+</form>
+
+<p style="margin-top:10px;">
+    May account ka na? <a href="{{ url_for('login') }}">Login here</a>
+</p>
+
+{% endblock %}

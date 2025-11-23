@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2 style="text-align:center;">Mind & Mood Analytics (Last 7 Days)</h2>
+
+<div class="card" style="padding: 20px; max-width: 700px; margin: 0 auto 20px auto;">
+
+    <h3>Overall Summary</h3>
+    <p><b>Total Study Time:</b> {{ total_study_minutes }} minutes</p>
+    <p><b>Total Rest Time:</b> {{ total_rest_minutes }} minutes</p>
+    <p><b>Average Study per Day:</b> {{ avg }} minutes/day</p>
+
+    <h3>Productivity Level</h3>
+    {% if productivity == "Highly Productive" %}
+        <p style="color: green; font-weight: bold;">🟢 {{ productivity }}</p>
+    {% elif productivity == "Moderately Productive" %}
+        <p style="color: orange; font-weight: bold;">🟠 {{ productivity }}</p>
+    {% elif productivity == "Low Productivity" %}
+        <p style="color: red; font-weight: bold;">🔴 {{ productivity }}</p>
+    {% else %}
+        <p style="color: gray; font-weight: bold;">⚪ {{ productivity }}</p>
+    {% endif %}
+
+    <h3>What You Can Do Next</h3>
+    <p><em>{{ recommendation }}</em></p>
+
+    <h3>Mood-Based Advice</h3>
+    <p>{{ advice }}</p>
+</div>
+
+
+<h3 style="text-align:center; margin-top:30px;">7-Day Mind & Mood Summary</h3>
+
+<!-- CENTERED TABLE -->
+<div style="display:flex; justify-content:center; margin-top:10px;">
+    <table style="border-collapse: collapse; width: 70%; max-width:600px;">
+        <tr>
+            <th style="border:1px solid #ddd; padding:8px; text-align:center;">Date</th>
+            <th style="border:1px solid #ddd; padding:8px; text-align:center;">Mood</th>
+            <th style="border:1px solid #ddd; padding:8px; text-align:center;">Study Minutes</th>
+        </tr>
+
+        {% for row in rows %}
+        <tr>
+            <td style="border:1px solid #ddd; padding:8px; text-align:center;">{{ row.date }}</td>
+            <td style="border:1px solid #ddd; padding:8px; text-align:center;">{{ row.mood }}</td>
+            <td style="border:1px solid #ddd; padding:8px; text-align:center;">{{ row.minutes }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+<br>
+
+{% endblock %}
